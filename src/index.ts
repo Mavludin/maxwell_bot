@@ -1,8 +1,8 @@
-const { Telegraf } = require("telegraf");
-require("dotenv").config();
-const axios = require('axios');
+import axios from "axios";
+import { Telegraf } from "telegraf";
+import { BOT_TOKEN } from "./AppConfig";
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(BOT_TOKEN);
 
 bot.start((ctx) => {
   ctx.reply('Hello!!!');
@@ -20,7 +20,7 @@ bot.command('myCommand', (ctx) => {
   ctx.reply("Custom command!")
 });
 
-bot.command('getUsers', async (ctx) => {
+bot.command('getDollar', async (ctx) => {
   const response = await axios.get('https://jsonplaceholder.typicode.com/users');
   const firstUser = response.data[0];
 
