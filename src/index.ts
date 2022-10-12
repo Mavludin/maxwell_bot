@@ -1,6 +1,6 @@
-import axios from "axios";
-import { Telegraf } from "telegraf";
-import { BOT_TOKEN } from "./AppConfig";
+import { Telegraf } from 'telegraf';
+import { getDollar } from './api';
+import { BOT_TOKEN } from './AppConfig';
 
 const bot = new Telegraf(BOT_TOKEN);
 
@@ -9,26 +9,25 @@ bot.start((ctx) => {
 });
 
 bot.help((ctx) => {
- ctx.reply('This is help!') 
+  ctx.reply('This is help!');
 });
 
-bot.on("sticker", (ctx) => {
+bot.on('sticker', (ctx) => {
   ctx.reply('👍');
 });
 
 bot.command('myCommand', (ctx) => {
-  ctx.reply("Custom command!")
+  ctx.reply('Custom command!');
 });
 
 bot.command('getDollar', async (ctx) => {
-  const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-  const firstUser = response.data[0];
+  const response = await getDollar();
 
-  ctx.reply(firstUser.name);
+  ctx.reply(response);
 });
 
 bot.hears('Hi', (ctx) => {
-  ctx.reply('Hello there!')
+  ctx.reply('Hello there!');
 });
 
 bot.launch();
