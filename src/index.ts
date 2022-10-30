@@ -1,8 +1,15 @@
+import { Job, scheduleJob } from 'node-schedule';
 import { Telegraf } from 'telegraf';
 import { getDollar } from './api';
 import { BOT_TOKEN } from './AppConfig';
 
 const bot = new Telegraf(BOT_TOKEN);
+
+let job: Job;
+
+const stopJob = () => {
+  job?.cancel();
+}
 
 bot.start((ctx) => {
   ctx.reply('Hello!!!');
@@ -16,14 +23,18 @@ bot.on('sticker', (ctx) => {
   ctx.reply('👍');
 });
 
-bot.command('myCommand', (ctx) => {
-  ctx.reply('Custom command!');
+bot.command('stop', (ctx) => {
+  stopJob();
 });
 
 bot.command('getDollar', async (ctx) => {
-  const response = await getDollar();
+  job = scheduleJob('*/5 * * * * *', async () => {
+    const dollar = await getDollar();
 
-  ctx.reply(response);
+    if (dollar) {
+      ctx.reply(dollar);
+    }
+  });
 });
 
 bot.hears('Hi', (ctx) => {
