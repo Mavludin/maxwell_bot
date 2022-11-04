@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_URL } from './AppConfig';
 
-export const getDollar = async () => {
-  const { data } = await axios.get('https://cdn.cur.su/api/latest.json');
+export const getRUBToDollar = async (): Promise<string> => {
+  const { data } = await axios.get(API_URL);
 
   return data.rates.RUB
 };
